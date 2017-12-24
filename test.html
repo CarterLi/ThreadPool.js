@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>测试JS线程池</title>
+
+  <script src="index.js"></script>
+</head>
+<body>
+  <ul>
+    <li>请移动鼠标。如果持续有文字输出，证明后台任务没有阻塞 UI</li>
+  </ul>
+  <script>
+    'use strict';
+    const arr = Array.from({ length: 819200 }, () => Math.random() * 10000);
+
+    console.time('all')
+    const pool = new ThreadPool(arr => {
+      return arr.sort();
+    }, 5);
+    const promises = [];
+    for (var i=0; i<20; ++i) {
+      let index = i;
+      console.time(index);
+      promises.push(pool.dispatch(arr)
+        .then(res => console.log(res))
+        .catch(err => console.error(err))
+        .then(() => console.timeEnd(index)));
+    }
+    Promise.all(promises).then(() => console.timeEnd('all'));
+  </script>
+  <script>
+    'use strict';
+    const ul = document.querySelector('ul');
+    document.onmousemove = e => {
+      const li = document.createElement('li');
+      li.textContent = `${e.timeStamp | 0}: ${e.screenX}, ${e.screenY}`;
+      ul.appendChild(li);
+      li.scrollIntoView();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+      "module": "umd",
+      "moduleResolution": "node",
+      "target": "esnext",
+      "noUnusedLocals": true,
+      "noFallthroughCasesInSwitch": true,
+      "noImplicitReturns": true,
+      "strict": true,
+      "alwaysStrict": true,
+      "noUnusedParameters": true
+  }
+}
